@@ -8,7 +8,7 @@ processArgs(process.argv);
 // set filename to command line option or default
 let fileName = process.argv[2] || 'customer-data.csv';
 
-// set full system path tp file
+// set full system path to file
 let fullPath = path.join(__dirname, fileName);
 
 let data;
