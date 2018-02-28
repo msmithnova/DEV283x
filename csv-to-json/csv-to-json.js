@@ -54,9 +54,14 @@ for (let i = 1; i < dataArray.length; i++) {
 // and replace with '.json'
 let outFile = process.argv[3] || fileName.slice(0, fileName.lastIndexOf('.')) + '.json';
 
+// stringify JSON
+let jsonString = JSON.stringify(jsonData, null, 2);
+// replace line endings to match solution file
+jsonString = jsonString.replace(/\n/g,'\r\n');
+
 try {
     // write file synchronously
-    fs.writeFileSync(path.join(__dirname, outFile), JSON.stringify(jsonData));
+    fs.writeFileSync(path.join(__dirname, outFile), jsonString);
 } catch (err) {
     // if there is an eror display message and exit
     console.log('Encountered error: ', err.message);
