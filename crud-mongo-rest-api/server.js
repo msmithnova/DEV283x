@@ -14,7 +14,7 @@ mongodb.MongoClient.connect(url, (error, client) => {
 
     let db = client.db('edx-course-db')
 
-    app.get('/accounts', (req, res) => {
+    app.get('/accounts', (req, res, next) => {
         db.collection('accounts')
             .find({}, { sort: { _id: -1 } })
             .toArray((error, accounts) => {
@@ -23,7 +23,7 @@ mongodb.MongoClient.connect(url, (error, client) => {
             })
     })
 
-    app.post('/accounts', (req, res) => {
+    app.post('/accounts', (req, res, next) => {
         let newAccount = req.body
         db.collection('accounts').insert(newAccount, (error, results) => {
             if (error) return next(error)
@@ -31,7 +31,7 @@ mongodb.MongoClient.connect(url, (error, client) => {
         })
     })
 
-    app.put('/accounts/:id', (req, res) => {
+    app.put('/accounts/:id', (req, res, next) => {
         db.collection('accounts')
             .update({ _id: mongodb.ObjectID(req.params.id) },
                 { $set: req.body },
@@ -42,13 +42,14 @@ mongodb.MongoClient.connect(url, (error, client) => {
             )
     })
 
-    app.delete('/accounts/:id', (req, res) => {
+    app.delete('/accounts/:id', (req, res, next) => {
         db.collection('accounts')
             .remove({ _id: mongodb.ObjectID(req.params.id) }, (error, results) => {
                 if (error) return next(error)
                 res.send(results)
             })
     })
-
+    
+    app.use(errorhandler())
     app.listen(3000)
 })
